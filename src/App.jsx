@@ -1,67 +1,107 @@
-import { useState } from "react";
+import React, { useMemo, useState } from "react";
 
 const profile = {
   name: "Yuxi Zheng",
-  subtitle: "Researcher",
-  affiliation: "Institution / University",
-  location: "City, Country",
-  email: "yuxi.zheng@example.com",
-  scholarUrl: "#",
-  githubUrl: "#",
-  websiteUrl: "#",
+  chineseName: "郑雨夕",
+  subtitle: "Ph.D. Student in Theoretical Computer Science",
+  affiliation: "EPFL",
+  location: "Lausanne, Switzerland",
+  email: "yuxi.zheng@epfl.ch",
+  scholarUrl: "https://scholar.google.com/citations?user=fxooVZMAAAAJ&hl=en",
+  advisorUrl: "https://ic-people.epfl.ch/~achiesa/",
 };
 
-const links = [
-  { label: "Google Scholar", href: profile.scholarUrl },
-  { label: "GitHub", href: profile.githubUrl },
-];
+const links = [{ label: "Google Scholar", href: profile.scholarUrl }];
 
 const researchInterests = [
-  "Research area 1",
-  "Research area 2",
-  "Research area 3",
-  "Research area 4",
+  "theoretical computer science",
+  "post-quantum cryptography",
+  "proof systems",
 ];
 
 const publications = [
   {
-    title: "Add a selected publication here",
-    venue: "Conference / Journal / Preprint, Year",
-    authors: "Yuxi Zheng, Coauthor Name",
-    abstract:
-      "Add a short abstract here. The homepage should show only the most useful summary: what problem the paper studies, the main result, and why the result matters.",
-    links: [
-      { label: "paper", href: "#" },
-      { label: "bibtex", href: "#" },
-    ],
+    title: "PMIP",
+    venue:
+      "International Colloquium on Automata, Languages, and Programming (ICALP), 2026",
+    authors: "Details to be added.",
+    abstract: "Abstract to be added.",
+    links: [],
   },
   {
-    title: "Add another selected publication here",
-    venue: "Conference / Journal / Preprint, Year",
-    authors: "Author list",
+    title:
+      "How to Prove Post-Quantum Security for Succinct Non-Interactive Reductions",
+    venue: "IACR Cryptology ePrint Archive, 2025",
+    authors: "Alessandro Chiesa, Zijing Di, Zihan Hu, Yuxi Zheng",
     abstract:
-      "A compact abstract can be hidden by default and expanded by the reader. This keeps the page clean while still allowing detail.",
-    links: [{ label: "paper", href: "#" }],
+      "Hash-based succinct non-interactive arguments are widely used because they are efficient, easy to deploy, and believed to have post-quantum security. This work studies hash-based succinct non-interactive reductions and proves security in the quantum random oracle model under a natural post-quantum analogue of state-restoration security. It also develops a modular framework for proving security of the extended BCS transformation via quantum extraction properties for vector commitments.",
+    links: [{ label: "ePrint", href: "https://eprint.iacr.org/2025/2166" }],
+  },
+  {
+    title:
+      "Multivariate Polynomial Regression of Euclidean Degree Extends the Stability for Fast Approximations of Trefethen Functions",
+    venue: "arXiv preprint arXiv:2212.11706, 2022",
+    authors:
+      "Sachin K. Thekke Veettil, Yuxi Zheng, Uwe Hernandez Acosta, Damar Wicaksono, Michael Hecht",
+    abstract:
+      "This work studies multivariate polynomial regression through general polynomial lp-degree notions, including total, Euclidean, and maximum degree. It shows that choosing Euclidean degree gives improved resistance to instability in fast function approximation, especially for a class of analytic functions called Trefethen functions, and complements the regression scheme with adaptive domain decomposition.",
+    links: [
+      { label: "arXiv", href: "https://arxiv.org/abs/2212.11706" },
+      { label: "doi", href: "https://doi.org/10.48550/arXiv.2212.11706" },
+    ],
+  },
+];
+
+const talks = [
+  {
+    title:
+      "How to Prove Post-Quantum Security for Succinct Non-Interactive Reductions",
+    venue: "Chinese University of Hong Kong",
+    date: "December 2025",
+  },
+  {
+    title:
+      "How to Prove Post-Quantum Security for Succinct Non-Interactive Reductions",
+    venue: "Amsterdam, institution to be added",
+    date: "January 2026",
   },
 ];
 
 const teaching = [
-  "Year · Institution · Teaching Assistant / Instructor · Course Name",
-  "Year · Institution · Mentoring / Course project / Seminar",
-  "Add another course, review session, or mentoring activity here.",
+  {
+    course: "MATH-489 Number Theory II.c — Cryptography",
+    instructor: "Dimitar Jetchev",
+    institution: "EPFL",
+    terms: "Spring 2024, Spring 2025",
+  },
+  {
+    course: "COM-402 Information Security and Privacy",
+    instructor: "Mathias Josef Payer",
+    institution: "EPFL",
+    terms: "Fall 2024, Fall 2025",
+  },
 ];
 
-const miscellaneous = [
-  "Add a short personal note here.",
-  "This section can later become notes, blog posts, or useful links.",
+/* Put your photos inside public/photos/ with these exact names. */
+const photoList = [
+  "/photos/yuxi1.jpg",
+  "/photos/yuxi2.jpg",
+  "/photos/yuxi3.jpg",
+  "/photos/yuxi4.jpg",
+  "/photos/yuxi5.jpg",
+  "/photos/yuxi6.jpg",
+  "/photos/yuxi7.jpg",
+  "/photos/yuxi8.jpg",
+  "/photos/yuxi9.jpg",
 ];
 
 function Header() {
   return (
     <header className="site-header">
-      <nav aria-label="Main navigation">
+      <nav>
         <a href="#about">About</a>
         <a href="#publications">Publications</a>
+        <a href="#talks">Talks</a>
         <a href="#teaching">Teaching</a>
         <a href="#misc">Miscellaneous</a>
       </nav>
@@ -69,10 +109,23 @@ function Header() {
   );
 }
 
-function Portrait() {
+function Portrait({ src, fallbackSrc }) {
+  const [currentSrc, setCurrentSrc] = useState(src);
+
   return (
-    <div className="portrait" aria-label={`${profile.name} portrait placeholder`}>
-      <span>YZ</span>
+    <div className="portrait-shell">
+      <div className="portrait">
+        <img
+          src={currentSrc}
+          alt="Yuxi Zheng"
+          className="portrait-image"
+          onError={() => {
+            if (currentSrc !== fallbackSrc) {
+              setCurrentSrc(fallbackSrc);
+            }
+          }}
+        />
+      </div>
     </div>
   );
 }
@@ -88,7 +141,7 @@ function Publication({ paper }) {
 
       <div className="paper-links">
         {paper.links.map((link) => (
-          <a key={link.label} href={link.href}>
+          <a key={link.label} href={link.href} target="_blank" rel="noreferrer">
             {link.label}
           </a>
         ))}
@@ -102,7 +155,37 @@ function Publication({ paper }) {
   );
 }
 
+function Talk({ talk }) {
+  return (
+    <li>
+      <span className="item-title">{talk.title}</span>
+      <br />
+      <span className="muted">
+        {talk.venue}, {talk.date}
+      </span>
+    </li>
+  );
+}
+
+function TeachingItem({ item }) {
+  return (
+    <li>
+      <span className="item-title">{item.course}</span>
+      <br />
+      <span className="muted">
+        Teaching Assistant, {item.institution}; instructor: {item.instructor};{" "}
+        {item.terms}
+      </span>
+    </li>
+  );
+}
+
 export default function App() {
+  const selectedPhoto = useMemo(() => {
+    const index = Math.floor(Math.random() * photoList.length);
+    return photoList[index];
+  }, []);
+
   return (
     <>
       <style>{styles}</style>
@@ -111,33 +194,30 @@ export default function App() {
         <Header />
 
         <section id="about" className="hero section">
-          <Portrait />
+          <Portrait src={selectedPhoto} fallbackSrc={photoList[0]} />
 
           <div className="intro">
-            <h1>{profile.name}</h1>
+            <h1>
+              {profile.name} <span className="chinese-name">{profile.chineseName}</span>
+            </h1>
 
             <p className="subtitle">
               {profile.subtitle}, {profile.affiliation}
             </p>
 
             <p>
-              I am a researcher interested in problems at the intersection of
-              theory, computation, and applications. This paragraph is a
-              placeholder and can later be replaced with Yuxi's specific
-              academic background, current position, advisors, and research
-              direction.
+              I am a third-year Ph.D. student at EPFL in the COMSEC lab, advised
+              by{" "}
+              <a href={profile.advisorUrl} target="_blank" rel="noreferrer">
+                Prof. Alessandro Chiesa
+              </a>
+              . I received my B.S. in Mathematics from Princeton University in
+              2023 and minored in Computer Science.
             </p>
 
             <p>
-              My research interests include{" "}
-              {researchInterests.slice(0, -1).join(", ")} and{" "}
-              {researchInterests[researchInterests.length - 1]}.
-            </p>
-
-            <p>
-              I enjoy working on clean mathematical ideas and building tools
-              that make technical concepts easier to understand, communicate,
-              and use.
+              I am broadly interested in {researchInterests[0]}, particularly in{" "}
+              {researchInterests[1]} and {researchInterests[2]}.
             </p>
 
             <p className="contact">
@@ -145,7 +225,9 @@ export default function App() {
               {links.map((link) => (
                 <span key={link.label}>
                   <span className="dot"> · </span>
-                  <a href={link.href}>{link.label}</a>
+                  <a href={link.href} target="_blank" rel="noreferrer">
+                    {link.label}
+                  </a>
                 </span>
               ))}
             </p>
@@ -154,7 +236,6 @@ export default function App() {
 
         <section id="publications" className="section">
           <h2>Publications</h2>
-
           <div className="publication-list">
             {publications.map((paper) => (
               <Publication key={paper.title} paper={paper} />
@@ -162,24 +243,27 @@ export default function App() {
           </div>
         </section>
 
+        <section id="talks" className="section">
+          <h2>Talks</h2>
+          <ul>
+            {talks.map((talk) => (
+              <Talk key={`${talk.title}-${talk.date}`} talk={talk} />
+            ))}
+          </ul>
+        </section>
+
         <section id="teaching" className="section">
           <h2>Teaching</h2>
-
           <ul>
             {teaching.map((item) => (
-              <li key={item}>{item}</li>
+              <TeachingItem key={`${item.course}-${item.terms}`} item={item} />
             ))}
           </ul>
         </section>
 
         <section id="misc" className="section">
           <h2>Miscellaneous</h2>
-
-          <ul>
-            {miscellaneous.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
+          <p>I only like skating and I hate and am stressed by anything else.</p>
         </section>
 
         <footer>
@@ -197,7 +281,7 @@ const styles = `
   --muted: #555555;
   --link: #1f5f9f;
   --line: #dddddd;
-  --max-width: 900px;
+  --max-width: 920px;
 }
 
 * {
@@ -253,29 +337,33 @@ a:hover {
 
 .hero {
   display: grid;
-  grid-template-columns: 190px 1fr;
-  gap: 34px;
+  grid-template-columns: 260px 1fr;
+  gap: 38px;
   align-items: start;
 }
 
-.portrait {
-  width: 190px;
-  height: 225px;
-  display: grid;
-  place-items: center;
-  background: #f2f2f2;
-  color: #666666;
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 1.8rem;
+.portrait-shell {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 6px;
 }
 
-.portrait span {
-  width: 82px;
-  height: 82px;
-  display: grid;
-  place-items: center;
-  border: 1px solid #d4d4d4;
+.portrait {
+  width: 230px;
+  height: 310px;
+  overflow: hidden;
+  background: #f4f4f4;
   border-radius: 50%;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.portrait-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  display: block;
 }
 
 h1,
@@ -291,6 +379,13 @@ h1 {
   font-size: 2.45rem;
   line-height: 1.12;
   font-weight: 500;
+}
+
+.chinese-name {
+  color: var(--muted);
+  font-size: 1.55rem;
+  font-weight: 400;
+  white-space: nowrap;
 }
 
 h2 {
@@ -320,7 +415,8 @@ h3 {
   margin-top: 20px;
 }
 
-.dot {
+.dot,
+.muted {
   color: var(--muted);
 }
 
@@ -385,7 +481,11 @@ ul {
 }
 
 li {
-  margin-bottom: 6px;
+  margin-bottom: 10px;
+}
+
+.item-title {
+  font-weight: 600;
 }
 
 footer {
@@ -413,13 +513,24 @@ footer {
     gap: 22px;
   }
 
+  .portrait-shell {
+    justify-content: flex-start;
+  }
+
   .portrait {
-    width: 190px;
-    height: 225px;
+    width: 220px;
+    height: 295px;
+    border-radius: 50%;
   }
 
   h1 {
     font-size: 2.15rem;
+  }
+
+  .chinese-name {
+    display: block;
+    margin-top: 4px;
+    font-size: 1.35rem;
   }
 }
 `;
