@@ -93,16 +93,18 @@ const teaching = [
 ];
 
 /* Put your photos inside public/photos/ with these exact names. */
+const siteBase = import.meta.env.BASE_URL;
+
 const photoList = [
-  "/photos/yuxi1.jpg",
-  "/photos/yuxi2.jpg",
-  "/photos/yuxi3.jpg",
-  "/photos/yuxi4.jpg",
-  "/photos/yuxi5.jpg",
-  "/photos/yuxi6.jpg",
-  "/photos/yuxi7.jpg",
-  "/photos/yuxi8.jpg",
-  "/photos/yuxi9.jpg",
+  `${siteBase}photos/yuxi1.jpg`,
+  `${siteBase}photos/yuxi2.jpg`,
+  `${siteBase}photos/yuxi3.jpg`,
+  `${siteBase}photos/yuxi4.jpg`,
+  `${siteBase}photos/yuxi5.jpg`,
+  `${siteBase}photos/yuxi6.jpg`,
+  `${siteBase}photos/yuxi7.jpg`,
+  `${siteBase}photos/yuxi8.jpg`,
+  `${siteBase}photos/yuxi9.jpg`,
 ];
 
 function Header() {
@@ -273,7 +275,7 @@ export default function App() {
 
         <section id="misc" className="section">
           <h2>Miscellaneous</h2>
-          <p>I only like skating and I hate and am stressed by anything else.</p>
+          <p>I like figure skating, drawing, gardening, and playing piano.  </p>
         </section>
 
         <footer>
